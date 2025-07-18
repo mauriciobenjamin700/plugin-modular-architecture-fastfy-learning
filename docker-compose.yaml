@@ -4,22 +4,25 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: store-api
+    env_file:
+      - .env
     ports:
       - "4000:3000"
     volumes:
       - .:/app
+    depends_on:
+      - store-db
 
   store-db:
     image: postgres:17.5
     container_name: store-db
-    environment:
-      POSTGRES_USER: store_user
-      POSTGRES_PASSWORD: store_password
-      POSTGRES_DB: store_db
+    env_file:
+      - .env
     ports:
       - "4001:5432"
     volumes:
       - store_db_data:/var/lib/postgresql/data
+    
 
 volumes:
   store_db_data:

@@ -1,7 +1,7 @@
-import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify'
-import UserService from './user.service'
+import { FastifyRequest, FastifyReply } from 'fastify'
+import UserService from './user.service.js'
 import { PoolClient } from 'pg'
-import { UserCreate } from './user.schema'
+import { UserCreate } from './user.schema.js'
 
 interface UserParams {
   id: string

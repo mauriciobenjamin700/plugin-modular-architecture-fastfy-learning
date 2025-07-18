@@ -3,14 +3,16 @@
   "name": "plugin-modular-architecture-fastfy-learning",
   "version": "1.0.0",
   "scripts": {
-    "build": "tsc && tsc-alias",
+    "build": "tsc",
     "start": "node dist/index.js",
     "dev": "tsx watch src/index.ts",
     "clean": "rm -rf dist"
   },
   "dependencies": {
     "@fastify/postgres": "^6.0.2",
+    "dotenv": "^17.2.0",
     "fastify": "^5.4.0",
+    "fastify-plugin": "^5.0.1",
     "pg": "^8.16.3"
   },
   "devDependencies": {

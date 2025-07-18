@@ -1,5 +1,5 @@
-import UserRepository from './user.repository'
-import { UserCreate, UserUpdate, UserResponse } from './user.schema'
+import UserRepository from './user.repository.js'
+import { UserCreate, UserUpdate, UserResponse } from './user.schema.js'
 import { PoolClient } from 'pg'
 
 

@@ -1,14 +1,14 @@
 import { FastifyInstance } from 'fastify'
 import fp from 'fastify-plugin'
-import { Pool, PoolClient } from 'pg'
+import { PoolClient } from 'pg'
+import fastifyPostgres from '@fastify/postgres'
+import type { PostgresDb } from '@fastify/postgres'
 
-// Extend FastifyInstance to include 'pg'
 declare module 'fastify' {
-    interface FastifyInstance {
-        pg: Pool & {
-        connect(): Promise<PoolClient>
-        }
-    }
+  interface FastifyInstance {
+    pg: PostgresDb & Record<string, PostgresDb>
+    dbManager: DatabaseHandler
+  }
 }
 
 export interface DatabaseConfig {
@@ -20,20 +20,25 @@ export interface DatabaseConfig {
 }
 
 export class DatabaseHandler {
-    private fastify: FastifyInstance
+  private fastify: FastifyInstance
 
-    constructor(fastify: FastifyInstance) {
-        this.fastify = fastify
-    }
+  constructor(fastify: FastifyInstance) {
+    this.fastify = fastify
+  }
 
   async connect(config: DatabaseConfig): Promise<void> {
     const connectionString = `postgres://${config.username}:${config.password}@${config.host}:${config.port}/${config.database}`
     
-    await this.fastify.register(require('@fastify/postgres'), {
+    // ✅ Usar import ES modules ao invés de require
+    await this.fastify.register(fastifyPostgres, {
       connectionString
     })
   }
 
+  /**
+   * Creates the necessary tables in the database.
+   * This method should be called after connecting to the database.
+   */
   async createTables(): Promise<void> {
     const client: PoolClient = await this.fastify.pg.connect()
     
@@ -58,7 +63,11 @@ export class DatabaseHandler {
     }
   }
 
-    async getConnection() : Promise<PoolClient> {
+  /**
+   * Retrieves a database client for executing queries.
+   * @returns A PoolClient instance.
+   */
+  async getClient(): Promise<PoolClient> {
     return this.fastify.pg.connect()
   }
 }

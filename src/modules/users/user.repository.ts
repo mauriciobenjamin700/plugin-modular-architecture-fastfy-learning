@@ -1,6 +1,6 @@
-import GeneratorHandler from '@/utils/generator'
-import UserModel from './user.model'
-import { UserCreate, UserResponse } from './user.schema'
+import GeneratorHandler from '../../utils/generator.js'
+import UserModel from './user.model.js'
+import { UserCreate, UserResponse } from './user.schema.js'
 import { PoolClient } from 'pg'
 
 /**
